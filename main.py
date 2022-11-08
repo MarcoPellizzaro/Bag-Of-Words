@@ -29,7 +29,7 @@ res5 = requests.get(url)
 html_pages = {res1.text, res2.text, res3.text, res4.text, res5.text}
 
 corpus = []
-vocabulario1 = []
+vocabulario = []
 
 for html_page in html_pages:
   soup = BeautifulSoup(html_page, 'html.parser')
@@ -43,12 +43,24 @@ for lista in corpus:
       j = re.split('[,()]',j)
       for i in j:
         no = True
-        for x in vocabulario1:
-          if i.lower() == x[0]:
-            x[1] += 1
+        for x in vocabulario:
+          if i.lower() == x:
             no = False
             break
         if no and i != '':
-          vocabulario1.append([i.lower(), 1])
+          vocabulario.append(i.lower())
 
-print(vocabulario1)
+print(vocabulario)
+
+bagOfWords = []
+
+for sentencas in corpus:
+    for sentenca in sentencas:
+      vetor = [0] * len(vocabulario)
+      for palavra in sentenca.split(' '):
+          if palavra in vocabulario:
+            vetor[vocabulario.index(palavra)] += 1
+      bagOfWords.append(vetor)
+
+for x in bagOfWords:
+  print(x)
